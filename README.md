@@ -41,6 +41,7 @@ npm run dev
 
 The project is organized into the following directories:
 
+```
 src/
 ├── controllers/
 │ ├── auth.ts
@@ -64,6 +65,7 @@ src/
 │ ├── auth.ts
 │ └── broadcast.ts
 └── index.ts
+```
 
 ## API Documentation
 
