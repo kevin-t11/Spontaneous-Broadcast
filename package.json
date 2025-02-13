@@ -4,11 +4,10 @@
   "description": "A spontaneous meetup broadcast system with separate workers",
   "main": "index.js",
   "scripts": {
-    "dev:server": "nodemon --watch src --exec ts-node src/index.ts",
-    "dev:cleanup": "nodemon --watch src --exec ts-node src/workers/cleanupWorker.ts",
-    "dev:notification": "nodemon --watch src --exec ts-node src/workers/notificationWorker.ts",
+    "dev:api": "nodemon --watch src --exec ts-node src/index.ts",
+    "dev:cleanup": "nodemon --watch src/worker --ext ts --exec \"ts-node\" src/worker/cleanup.ts",
+    "dev:notification": "nodemon --watch src/worker --ext ts --exec \"ts-node\" src/worker/notification.ts",
     "build": "tsc -b",
-    "start": "npx tsc -b && nodemon dist/index.js",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write ."
@@ -31,6 +30,7 @@
     "express-rate-limit": "^7.5.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.0",
+    "node-cron": "^3.0.3",
     "redis": "^4.7.0",
     "typescript": "^5.7.3",
     "zod": "^3.24.2"
@@ -38,6 +38,7 @@
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.8",
+    "@types/node-cron": "^3.0.11",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
     "eslint": "^9.20.1",

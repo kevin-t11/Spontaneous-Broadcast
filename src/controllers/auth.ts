@@ -13,7 +13,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const parsedData = registerSchema.safeParse(req.body);
     if (!parsedData.success) {
       // Return all error messages from Zod validation
-      const errorMessage = parsedData.error.errors.map((err) => err.message).join(', ');
+      const errorMessage = parsedData.error.errors
+        .map((err) => err.message)
+        .join(', ');
       res.status(400).json({ message: errorMessage });
       return;
     }
@@ -60,7 +62,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     // Validate the incoming data using Zod
     const parsedData = loginSchema.safeParse(req.body);
     if (!parsedData.success) {
-      const errorMessage = parsedData.error.errors.map((err) => err.message).join(', ');
+      const errorMessage = parsedData.error.errors
+        .map((err) => err.message)
+        .join(', ');
       res.status(400).json({ message: errorMessage });
       return;
     }

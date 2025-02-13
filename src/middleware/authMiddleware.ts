@@ -8,7 +8,11 @@ export interface AuthRequest extends Request {
   user?: any;
 }
 
-export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
+export const authenticateToken = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+): void => {
   // Extract the token from the Authorization header (format: "Bearer <token>")
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];

@@ -1,17 +1,30 @@
 import mongoose from 'mongoose';
-import Broadcast from '../models/broadcast';
 import dotenv from 'dotenv';
+import cron from 'node-cron';
+import Broadcast from '../models/broadcast';
 
 dotenv.config();
 
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/spontaneous-broadcast';
+const mongoURI: string =
+  process.env.MONGO_URI || 'mongodb://localhost:27017/spontaneous-broadcast';
 
+// Connect to MongoDB
 mongoose
   .connect(mongoURI)
-  .then(() => console.log('CleanupWorker connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error in cleanupWorker', err));
+  .then(() => {
+    console.log('Cleanup Worker connected to MongoDB');
+    scheduleCleanup();
+  })
+  .catch((err: unknown) => {
+    console.error('MongoDB connection error in Cleanup Worker:', err);
+    process.exit(1);
+  });
 
-const cleanExpiredBroadcasts = async () => {
+/**
+ * Updates all broadcasts that have expired and are still marked as "active"
+ * by setting their status to "expired".
+ */
+const cleanupExpiredBroadcasts = async (): Promise<void> => {
   try {
     const now = new Date();
     const result = await Broadcast.updateMany(
@@ -19,12 +32,24 @@ const cleanExpiredBroadcasts = async () => {
       { $set: { status: 'expired' } }
     );
     if (result.modifiedCount > 0) {
-      console.log(`Marked ${result.modifiedCount} broadcasts as expired`);
+      console.log(
+        `Cleanup Worker: Marked ${result.modifiedCount} broadcasts as expired.`
+      );
+    } else {
+      console.log('Cleanup Worker: No broadcasts to update.');
     }
   } catch (error) {
-    console.error('Error cleaning expired broadcasts:', error);
+    console.error('Error in cleanupExpiredBroadcasts:', error);
   }
 };
 
-// Run cleanup every minute.
-setInterval(cleanExpiredBroadcasts, 60 * 1000);
+/**
+ * Schedules the cleanup job using node-cron.
+ * This cron expression "* * * * *" means the job runs at the start of every minute.
+ */
+const scheduleCleanup = (): void => {
+  cron.schedule('* * * * *', async () => {
+    console.log('Running scheduled cleanup job...');
+    await cleanupExpiredBroadcasts();
+  });
+};

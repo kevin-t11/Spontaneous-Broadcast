@@ -19,7 +19,8 @@ app.use('/api/broadcasts', broadcastRoutes);
 app.use('/api/auth', authRoutes);
 
 // Connect to MongoDB
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/spontaneous-broadcast';
+const mongoURI =
+  process.env.MONGO_URI || 'mongodb://localhost:27017/spontaneous-broadcast';
 mongoose
   .connect(mongoURI)
   .then(() => {
