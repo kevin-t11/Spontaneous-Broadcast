@@ -16,24 +16,28 @@ Spontaneous Broadcast is a modern web application that enables real-time broadca
 
 1. Clone the repository:
 
-bash
+```bash
 git clone https://github.com/yourusername/spontaneous-broadcast.git
 cd spontaneous-broadcast
+```
 
 2. Install dependencies:
 
-bash
+```bash
 npm install
+```
 
 3. Create a `.env` file in the root directory with the following variables:
 
-bash
+```bash
 cp .env.example .env
+```
 
 4. Start the development server:
 
-bash
+```bash
 npm run dev
+```
 
 5. Access the application at `http://localhost:3000`
 
